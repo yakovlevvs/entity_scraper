@@ -1,0 +1,73 @@
+<html>
+	<head>
+		<script
+			  src="https://code.jquery.com/jquery-3.2.1.js"
+			  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+			  crossorigin="anonymous">
+		</script>
+		<script type="text/javascript">
+			var server = "http://127.0.0.1:5000";
+			var op_num = {'type': '', 'value': ''};
+			function update_var()
+			{
+				var n1 = $("#n1").val();
+				if (n1.length == 10) {
+					var n2 = 'ИНН';
+				} else if (n1.length == 13) {
+					var n2 = 'ОГРН';
+				} else {
+					alert( 'Ввод должен содержать 10 или 13 символов' );
+					}
+				op_num['type']=n2;
+				op_num['value']=n1;
+			}
+			$( function() {
+				$( "#search" ).click(function() {
+					var appdir='/';
+					var send_msg = "<p>Sending numbers</p>";
+					var received_msg = "<p>Result returned</p>";
+					update_var();
+					$.ajax({
+  						type: "POST",
+  						url:server+appdir,
+  						data: JSON.stringify(op_num),
+  						dataType: 'json'
+					}).done(function(data) { 
+						console.log(data);
+						$('#message').html(data['msg']);
+					});
+				});
+  			});
+
+		</script>
+	</head>
+	<body>
+		<div>
+			<div>
+				<label>Введите ИНН или ОГРН:</label><input id="n1"/><br/>
+			</div>
+			<div id="search" style="background-color:gray; width:100px; color:white;">
+				Отправить
+			</div>
+			<div id="message">
+			</div>
+		</div>
+	</body>
+</html>
+
+
+
+<table>
+  <tr>
+  <th>ИНН/ОГРН</th>
+  <th>Результат</th>
+  <th>Дата</th>
+</tr>
+  {% for row in data %}
+  <tr>
+    <td> {{ row[0] }}</th>
+	<td> {{ row[1] }}</th>
+	<td> {{ row[2] }}</th>
+  </tr> 
+  {% endfor %}
+</table>
