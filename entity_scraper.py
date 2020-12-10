@@ -98,8 +98,6 @@ def hello_world():
 if __name__ == '__main__':
     conn = sqlite3.connect('requests.db')
     cur = conn.cursor()
-    cur.execute("DROP TABLE REQUESTS;")
-    conn.commit()
     cur.execute("""CREATE TABLE IF NOT EXISTS REQUESTS(
                     INN_OR_OGRN TEXT,
                     RESULT TEXT,
